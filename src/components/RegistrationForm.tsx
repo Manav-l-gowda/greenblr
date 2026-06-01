@@ -134,7 +134,7 @@ export default function RegistrationForm() {
 
     setLoading(true);
     try {
-      const orderRes = await fetch('/api/payment/create-order', {
+      const orderRes = await fetch('https://vyxlqqbznqytxglzstbe.supabase.co/functions/v1/razorpay-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ runners, couponCode: couponCode || undefined }),
