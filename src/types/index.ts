@@ -47,9 +47,9 @@ export interface Runner {
 }
 
 export const CATEGORY_PRICES: Record<Category, number> = {
-  '3K': 500,
-  '5K': 799,
-  '10K': 999,
+  '3K': 699,
+  '5K': 999,
+  '10K': 1299,
 };
 
 export const GST_RATE = 0.18;
