@@ -1,7 +1,9 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { calculatePrice } from '@/types';
 import AnimatedCounter from '@/components/AnimatedCounter';
 import ScrollReveal from '@/components/ScrollReveal';
+import { CalendarDays, MapPin, TreePine, PersonStanding, Handshake, Star } from 'lucide-react';
 
 export default function HomePage() {
   return (
@@ -15,12 +17,12 @@ export default function HomePage() {
           <img
             src="/vidhana-soudha.png"
             alt=""
-            className="w-full mix-blend-multiply opacity-70"
+            className="w-full opacity-90 brightness-110 contrast-110"
           />
         </div>
 
         {/* Subtle gradient: dark at top for text legibility, fades out before building */}
-        <div className="absolute inset-0 bg-gradient-to-b from-green-950/90 via-green-950/40 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-green-950/95 via-green-950/80 to-green-950/50 pointer-events-none" />
 
         {/* Radial glow behind logo */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-green-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -41,7 +43,7 @@ export default function HomePage() {
           </div>
 
           {/* Badge */}
-          <div className="animate-fadeInUp delay-100 inline-flex items-center gap-2 bg-green-800/60 backdrop-blur-sm border border-green-600/40 text-green-300 text-xs font-semibold px-4 py-1.5 rounded-full mb-5 tracking-widest uppercase">
+          <div className="animate-fadeInUp delay-100 inline-flex items-center gap-2 bg-green-800/60 backdrop-blur-sm border border-green-600/40 text-white text-xs font-semibold px-4 py-1.5 rounded-full mb-5 tracking-widest uppercase">
             <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
             Bengaluru&apos;s Largest Green Movement
           </div>
@@ -52,18 +54,23 @@ export default function HomePage() {
           </h1>
 
           {/* Tagline */}
-          <p className="animate-fadeInUp delay-300 font-heading font-bold text-xl sm:text-3xl text-green-300 tracking-wide mb-3 uppercase">
+          <p className="animate-fadeInUp delay-300 font-heading font-bold text-xl sm:text-3xl text-white drop-shadow-lg tracking-wide mb-3 uppercase">
             One Registration · One Root
           </p>
 
           {/* Date & location chip */}
           <div className="animate-fadeInUp delay-400 flex flex-wrap justify-center gap-3 mb-10">
-            {['🗓 August 16, 2026', '📍 Bengaluru', '3K · 5K · 10K'].map((item) => (
+            {([
+              { icon: <CalendarDays className="w-4 h-4" />, label: 'August 16, 2026' },
+              { icon: <MapPin className="w-4 h-4" />, label: 'Bengaluru' },
+              { icon: null, label: '3K · 5K · 10K' },
+            ] as { icon: React.ReactNode; label: string }[]).map((item) => (
               <span
-                key={item}
-                className="bg-white/10 backdrop-blur-sm border border-white/20 text-white/80 text-sm px-4 py-1.5 rounded-full"
+                key={item.label}
+                className="inline-flex items-center gap-1.5 bg-green-950/70 backdrop-blur-md border border-white/30 text-white text-sm px-4 py-1.5 rounded-full shadow-lg"
               >
-                {item}
+                {item.icon}
+                {item.label}
               </span>
             ))}
           </div>
@@ -129,13 +136,13 @@ export default function HomePage() {
         {/* Feature tiles */}
         <div className="max-w-4xl mx-auto mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6">
           {[
-            { icon: '🌳', title: 'Plant a Tree', desc: 'Every runner plants a real tree in Bengaluru on race day.' },
-            { icon: '🏃', title: 'Run Your Distance', desc: 'Choose from 3K, 5K or 10K — a category for every runner.' },
-            { icon: '🤝', title: 'Join the Movement', desc: "Be part of Bangalore's largest green community event." },
+            { icon: <TreePine className="w-8 h-8 text-green-600" />, title: 'Plant a Tree', desc: 'Every runner plants a real tree in Bengaluru on race day.' },
+            { icon: <PersonStanding className="w-8 h-8 text-green-600" />, title: 'Run Your Distance', desc: 'Choose from 3K, 5K or 10K — a category for every runner.' },
+            { icon: <Handshake className="w-8 h-8 text-green-600" />, title: 'Join the Movement', desc: "Be part of Bangalore's largest green community event." },
           ].map((f, i) => (
             <ScrollReveal key={f.title} delay={i * 150}>
               <div className="card-lift bg-white rounded-2xl p-6 text-center border border-gray-100 shadow-sm">
-                <div className="text-4xl mb-3">{f.icon}</div>
+                <div className="flex justify-center mb-3">{f.icon}</div>
                 <h3 className="font-heading font-bold text-gray-900 text-lg mb-2">{f.title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{f.desc}</p>
               </div>
@@ -173,8 +180,8 @@ export default function HomePage() {
                   {isPopular && (
                     <>
                       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-400 via-emerald-300 to-green-400" />
-                      <div className="text-green-300 text-xs font-bold uppercase tracking-widest mb-3">
-                        ⭐ Most Popular
+                      <div className="inline-flex items-center gap-1.5 text-green-300 text-xs font-bold uppercase tracking-widest mb-3">
+                        <Star className="w-3.5 h-3.5 fill-green-300" /> Most Popular
                       </div>
                     </>
                   )}
@@ -241,8 +248,8 @@ export default function HomePage() {
             <span className="font-heading font-bold text-gray-400">GREEN BLR 2.0</span>
           </div>
           <p>August 16, 2026 · Bengaluru</p>
-          <a href="mailto:hello@bengaluruletsrun.com" className="text-green-500 hover:text-green-400 transition-colors">
-            hello@bengaluruletsrun.com
+          <a href="mailto:Green@bengaluruletsrun.com" className="text-green-500 hover:text-green-400 transition-colors">
+            Green@bengaluruletsrun.com
           </a>
         </div>
       </footer>
