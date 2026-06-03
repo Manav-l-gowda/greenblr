@@ -61,6 +61,12 @@ function generateCode() {
   return adj[Math.floor(Math.random() * adj.length)] + num;
 }
 
+const FN = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-api`
+const adminFetch = (path: string, init?: RequestInit) => {
+  const pw = sessionStorage.getItem('adminPassword') || ''
+  return fetch(`${FN}/${path}`, { ...init, headers: { 'Content-Type': 'application/json', 'x-admin-password': pw, ...init?.headers } })
+}
+
 export default function AdminDashboard() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [coupons, setCoupons] = useState<Coupon[]>([]);
@@ -81,14 +87,14 @@ export default function AdminDashboard() {
 
   const fetchStats = useCallback(async () => {
     setStatsLoading(true);
-    const res = await fetch('/api/admin/stats');
+    const res = await adminFetch('stats');
     if (res.ok) setStats(await res.json());
     setStatsLoading(false);
   }, []);
 
   const fetchCoupons = useCallback(async () => {
     setCouponsLoading(true);
-    const res = await fetch('/api/admin/coupons');
+    const res = await adminFetch('coupons');
     if (res.ok) setCoupons((await res.json()).coupons);
     setCouponsLoading(false);
   }, []);
@@ -100,9 +106,8 @@ export default function AdminDashboard() {
     setCreateError('');
     setCreateSuccess('');
     setCreating(true);
-    const res = await fetch('/api/admin/coupons', {
+    const res = await adminFetch('coupons', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         code: form.code,
         discount_type: form.discount_type,
@@ -123,9 +128,8 @@ export default function AdminDashboard() {
   }
 
   async function toggleCoupon(id: string, is_active: boolean) {
-    await fetch('/api/admin/coupons', {
+    await adminFetch('coupons', {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id, is_active }),
     });
     fetchCoupons();
@@ -167,15 +171,22 @@ export default function AdminDashboard() {
             </svg>
             Refresh
           </button>
-          <a
-            href="/api/admin/export"
+          <button
+            onClick={async () => {
+              const res = await adminFetch('export');
+              const blob = await res.blob();
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url; a.download = `greenblr2-runners-${Date.now()}.csv`; a.click();
+              URL.revokeObjectURL(url);
+            }}
             className="bg-green-700 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
           >
             Export CSV
-          </a>
+          </button>
           <button
-            onClick={async () => {
-              await fetch('/api/admin/logout', { method: 'POST' });
+            onClick={() => {
+              sessionStorage.removeItem('adminPassword');
               window.location.href = '/admin/login';
             }}
             className="text-gray-400 hover:text-red-400 text-sm transition-colors"
@@ -446,7 +457,7 @@ function RunnersList() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/admin/export?json=1')
+    adminFetch('export?json=1')
       .then((r) => r.json())
       .then((d) => { setRunners(d.runners ?? []); setLoading(false); });
   }, []);
@@ -455,12 +466,19 @@ function RunnersList() {
     <div className="bg-gray-800 rounded-xl overflow-hidden">
       <div className="px-6 py-4 border-b border-gray-700 flex items-center justify-between">
         <h2 className="font-semibold text-gray-200">All Registered Runners ({runners.length})</h2>
-        <a
-          href="/api/admin/export"
+        <button
+          onClick={async () => {
+            const res = await adminFetch('export');
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = `greenblr2-runners-${Date.now()}.csv`; a.click();
+            URL.revokeObjectURL(url);
+          }}
           className="bg-green-700 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
         >
           Export CSV
-        </a>
+        </button>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">

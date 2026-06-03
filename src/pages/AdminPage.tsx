@@ -8,13 +8,14 @@ export default function AdminPage() {
   const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
-    fetch('/api/admin/me')
+    const pw = sessionStorage.getItem('adminPassword');
+    if (!pw) { navigate('/admin/login', { replace: true }); setChecking(false); return; }
+    fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-api/me`, {
+      headers: { 'x-admin-password': pw },
+    })
       .then((res) => {
-        if (res.ok) {
-          setAuthorized(true);
-        } else {
-          navigate('/admin/login', { replace: true });
-        }
+        if (res.ok) setAuthorized(true);
+        else { sessionStorage.removeItem('adminPassword'); navigate('/admin/login', { replace: true }); }
       })
       .catch(() => navigate('/admin/login', { replace: true }))
       .finally(() => setChecking(false));

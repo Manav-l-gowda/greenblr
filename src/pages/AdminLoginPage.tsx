@@ -12,13 +12,14 @@ export default function AdminLoginPage() {
     setError('');
     setLoading(true);
 
-    const res = await fetch('/api/admin/login', {
+    const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-api/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password }),
     });
 
     if (res.ok) {
+      sessionStorage.setItem('adminPassword', password);
       navigate('/admin');
     } else {
       setError('Invalid password. Please try again.');

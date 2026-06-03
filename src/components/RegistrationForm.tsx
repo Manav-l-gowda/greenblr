@@ -79,7 +79,7 @@ export default function RegistrationForm() {
     setCouponError('');
     setCouponData(null);
     try {
-      const res = await fetch('/api/coupon/validate', {
+      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/coupon-validate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code: couponInput.trim().toUpperCase(), baseTotal: baseAmount }),
@@ -156,7 +156,7 @@ export default function RegistrationForm() {
         },
         theme: { color: '#1a6b2a' },
         handler: async (response: any) => {
-          const verifyRes = await fetch('/api/payment/verify', {
+          const verifyRes = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/payment-verify`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
