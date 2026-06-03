@@ -62,7 +62,13 @@ body {
   50%       { transform: translateY(-8px); }
 }
 
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 /* ── Animation classes ── */
+.animate-marquee { animation: marquee 20s linear infinite; }
 .animate-fadeInUp   { animation: fadeInUp   0.8s ease both; }
 .animate-fadeIn     { animation: fadeIn     1s   ease both; }
 .animate-float      { animation: float      4s   ease-in-out infinite; }

@@ -113,6 +113,30 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── PARTNERS ── */}
+      <section className="bg-white py-10 border-y border-gray-100 overflow-hidden">
+        <p className="text-center text-xs font-bold tracking-widest uppercase text-gray-400 mb-6">Our Partners</p>
+        <div className="flex w-max animate-marquee gap-20 items-center px-10">
+          {[
+            { src: '/thrive Logo.png', alt: 'Thrive Security' },
+            { src: "/Jeff's Logo.png", alt: "Jeff's Corporation" },
+            { src: '/thrive Logo.png', alt: 'Thrive Security' },
+            { src: "/Jeff's Logo.png", alt: "Jeff's Corporation" },
+            { src: '/thrive Logo.png', alt: 'Thrive Security' },
+            { src: "/Jeff's Logo.png", alt: "Jeff's Corporation" },
+            { src: '/thrive Logo.png', alt: 'Thrive Security' },
+            { src: "/Jeff's Logo.png", alt: "Jeff's Corporation" },
+          ].map((logo, i) => (
+            <img
+              key={i}
+              src={logo.src}
+              alt={logo.alt}
+              className="h-16 object-contain"
+            />
+          ))}
+        </div>
+      </section>
+
       {/* ── ABOUT ── */}
       <section className="py-20 px-4">
         <ScrollReveal>
