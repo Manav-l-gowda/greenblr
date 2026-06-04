@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminDashboard from '@/components/AdminDashboard';
-import { SUPABASE_FN } from '@/lib/supabase';
+import { SUPABASE_FN, fnHeaders } from '@/lib/supabase';
 
 export default function AdminPage() {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ export default function AdminPage() {
     const pw = sessionStorage.getItem('adminPassword');
     if (!pw) { navigate('/admin/login', { replace: true }); setChecking(false); return; }
     fetch(`${SUPABASE_FN}/admin-api/me`, {
-      headers: { 'x-admin-password': pw },
+      headers: { ...fnHeaders, 'x-admin-password': pw },
     })
       .then((res) => {
         if (res.ok) setAuthorized(true);

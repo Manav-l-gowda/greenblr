@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RunnerCard from './RunnerCard';
 import { RunnerFormData, calculatePrice, CATEGORY_PRICES, CouponValidation } from '@/types';
-import { SUPABASE_FN } from '@/lib/supabase';
+import { SUPABASE_FN, fnHeaders } from '@/lib/supabase';
 
 const emptyRunner = (): RunnerFormData => ({
   first_name: '',
@@ -82,7 +82,7 @@ export default function RegistrationForm() {
     try {
       const res = await fetch(`${SUPABASE_FN}/coupon-validate`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: fnHeaders,
         body: JSON.stringify({ code: couponInput.trim().toUpperCase(), baseTotal: baseAmount }),
       });
       const data = await res.json();
@@ -137,7 +137,7 @@ export default function RegistrationForm() {
     try {
       const orderRes = await fetch(`${SUPABASE_FN}/razorpay-checkout`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: fnHeaders,
         body: JSON.stringify({ runners, couponCode: couponCode || undefined }),
       });
       const orderData = await orderRes.json();
@@ -159,7 +159,7 @@ export default function RegistrationForm() {
         handler: async (response: any) => {
           const verifyRes = await fetch(`${SUPABASE_FN}/payment-verify`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: fnHeaders,
             body: JSON.stringify({
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
