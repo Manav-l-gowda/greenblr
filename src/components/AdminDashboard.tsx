@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { SUPABASE_FN } from '@/lib/supabase';
 
 interface DailyCount { date: string; count: number; }
 interface Stats {
@@ -61,7 +62,7 @@ function generateCode() {
   return adj[Math.floor(Math.random() * adj.length)] + num;
 }
 
-const FN = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-api`
+const FN = `${SUPABASE_FN}/admin-api`
 const adminFetch = (path: string, init?: RequestInit) => {
   const pw = sessionStorage.getItem('adminPassword') || ''
   return fetch(`${FN}/${path}`, { ...init, headers: { 'Content-Type': 'application/json', 'x-admin-password': pw, ...init?.headers } })

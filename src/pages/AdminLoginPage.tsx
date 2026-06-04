@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SUPABASE_FN } from '@/lib/supabase';
 
 export default function AdminLoginPage() {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ export default function AdminLoginPage() {
     setError('');
     setLoading(true);
 
-    const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-api/login`, {
+    const res = await fetch(`${SUPABASE_FN}/admin-api/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password }),

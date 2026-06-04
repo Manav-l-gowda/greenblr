@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RunnerCard from './RunnerCard';
 import { RunnerFormData, calculatePrice, CATEGORY_PRICES, CouponValidation } from '@/types';
+import { SUPABASE_FN } from '@/lib/supabase';
 
 const emptyRunner = (): RunnerFormData => ({
   first_name: '',
@@ -79,7 +80,7 @@ export default function RegistrationForm() {
     setCouponError('');
     setCouponData(null);
     try {
-      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/coupon-validate`, {
+      const res = await fetch(`${SUPABASE_FN}/coupon-validate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code: couponInput.trim().toUpperCase(), baseTotal: baseAmount }),
@@ -134,7 +135,7 @@ export default function RegistrationForm() {
 
     setLoading(true);
     try {
-      const orderRes = await fetch('https://vyxlqqbznqytxglzstbe.supabase.co/functions/v1/razorpay-checkout', {
+      const orderRes = await fetch(`${SUPABASE_FN}/razorpay-checkout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ runners, couponCode: couponCode || undefined }),
@@ -156,7 +157,7 @@ export default function RegistrationForm() {
         },
         theme: { color: '#1a6b2a' },
         handler: async (response: any) => {
-          const verifyRes = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/payment-verify`, {
+          const verifyRes = await fetch(`${SUPABASE_FN}/payment-verify`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
