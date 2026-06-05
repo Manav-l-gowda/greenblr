@@ -271,6 +271,7 @@ export default function HomePage() {
             <img src="/Green logo.png" alt="Green BLR" width={36} height={36} className="mix-blend-multiply opacity-70" />
             <span className="font-heading font-bold text-gray-400">GREEN BLR 2.0</span>
           </div>
+          <Link to="/about" className="text-gray-500 hover:text-gray-300 transition-colors">About Us</Link>
           <p>August 16, 2026 · Bengaluru</p>
           <a href="mailto:Green@bengaluruletsrun.com" className="text-green-500 hover:text-green-400 transition-colors">
             Green@bengaluruletsrun.com
